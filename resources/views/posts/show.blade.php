@@ -10,7 +10,9 @@
                     <div class="card-body">
                         <strong>Title:</strong> {{$post->Title}} <br>
                         <strong>Description:</strong> {{$post->Description}} <br>
-                        <strong>Created At:</strong> {{$post->created_at}}
+                        <strong>Created At:</strong> {{$post->created_at}} <br>
+                        <strong>Image:</strong> <br>
+                        <img src="{{ asset('/storage/img/'.$post->img) }}" alt="No image found"> 
                     </div>
                 </div>
             </div>
