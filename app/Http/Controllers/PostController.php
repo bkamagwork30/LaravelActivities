@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Http\Controllers\Controller;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 
@@ -23,8 +24,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post = Post::get();
-        return view('posts.index', compact('post'));
+        // $post = Post::get();
+        // return view('posts.index', compact('post'));
+        $posts = Post::where('title','!=','')->orderBy('created_at','desc')->get();
+        $count = Post::where('title','!=','')->count();
+        return view('posts.index', compact('posts', 'count'));
+        
     }
 
     /**
@@ -65,6 +70,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->description = $request->description;
         $post->img = $fileNameToStore;
+        $post->user_id = auth()->user()->id;
         $post->save();
 
         return redirect('/posts');
@@ -76,10 +82,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::find($id);
-        return view('posts.show', compact('post'));
+        //Shows a specific data row to show
+        $show = Post::find($post->id);
+        $comments = $post->comments;
+        // dd($post);
+
+        return view('posts.show', compact('show', 'comments'));
+
     }
 
     /**

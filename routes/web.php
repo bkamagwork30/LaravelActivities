@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
@@ -12,16 +13,16 @@ use App\Http\Controllers\PostController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', function () {
+    return redirect('/posts');
+});
+
 Route::resource('/posts',PostController::class);
+Route::resource('/comments', CommentController::class);
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::resource('posts',PostController::class)->only([
@@ -34,4 +35,4 @@ Route::resource('/posts',PostController::class);
 
 // My Account: 
 //  email: dennis.paralejas10@gmail.com
-//  password: august092019
+//  password: admin123
